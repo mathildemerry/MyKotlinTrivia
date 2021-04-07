@@ -25,6 +25,7 @@
         android:layout_height="match_parent"
         android:background="@color/youWinBackground">
 
+
         <Button
             android:id="@+id/nextMatchButton"
             android:layout_width="wrap_content"
@@ -53,7 +54,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/you_win" />
+            app:srcCompat="@drawable/winners_img" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

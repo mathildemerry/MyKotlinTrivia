@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -35,26 +36,23 @@ class GameFragment : Fragment() {
     // All questions must have four answers.  We'd want these to contain references to string
     // resources so we could internationalize. (Or better yet, don't define the questions in code...)
     private val questions: MutableList<Question> = mutableListOf(
-            Question(text = "What is Android Jetpack?",
-                    answers = listOf("All of these", "Tools", "Documentation", "Libraries")),
-            Question(text = "What is the base class for layouts?",
-                    answers = listOf("ViewGroup", "ViewSet", "ViewCollection", "ViewRoot")),
-            Question(text = "What layout do you use for complex screens?",
-                    answers = listOf("ConstraintLayout", "GridLayout", "LinearLayout", "FrameLayout")),
-            Question(text = "What do you use to push structured data into a layout?",
-                    answers = listOf("Data binding", "Data pushing", "Set text", "An OnClick method")),
-            Question(text = "What method do you use to inflate layouts in fragments?",
-                    answers = listOf("onCreateView()", "onActivityCreated()", "onCreateLayout()", "onInflateLayout()")),
-            Question(text = "What's the build system for Android?",
-                    answers = listOf("Gradle", "Graddle", "Grodle", "Groyle")),
-            Question(text = "Which class do you use to create a vector drawable?",
-                    answers = listOf("VectorDrawable", "AndroidVectorDrawable", "DrawableVector", "AndroidVector")),
-            Question(text = "Which one of these is an Android navigation component?",
-                    answers = listOf("NavController", "NavCentral", "NavMaster", "NavSwitcher")),
-            Question(text = "Which XML element lets you register an activity with the launcher activity?",
-                    answers = listOf("intent-filter", "app-registry", "launcher-registry", "app-launcher")),
-            Question(text = "What do you use to mark a layout for data binding?",
-                    answers = listOf("<layout>", "<binding>", "<data-binding>", "<dbinding>"))
+            Question(text = "When was Kotlin established?",
+                    answers = listOf("2011", "2008", "2016", "2012")),
+            Question(text = "What does val refer to?",
+                    answers = listOf("A variable", "A class", "A function", "A file")),
+            Question(text = "Which other programming language is compatible with Kotlin?",
+                    answers = listOf("Java", "HTML", "Python", "C")),
+            Question(text = "Which symbol should always end an expression of Kotlin code?",
+                    answers = listOf("none", ";", "?", "#")),
+            Question(text = "What is a String?",
+                    answers = listOf("A piece of text", "A range of numbers", "All positive numbers", "Value that can only be true or false")),
+            Question(text = "What is a Boolean?",
+                    answers = listOf("Value that can only be true or false", "A piece of text", "All positive numbers", "A range of numbers")),
+            Question(text = "Which of these expressions calls a function?",
+                    answers = listOf("println()", "var num = 0", "questionIndex++", "private fun printHello")),
+            Question(text = "What is the syntax for -equal to-?",
+                    answers = listOf("==", "__", "(=)", "//"))
+
     )
 
 
@@ -62,7 +60,9 @@ class GameFragment : Fragment() {
     lateinit var currentQuestion: Question
     lateinit var answers: MutableList<String>
     private var questionIndex = 0
-    private val numQuestions = Math.min((questions.size + 1) / 2, 3)
+    private val numQuestions = Math.min((questions.size + 1) /1,5)
+    private var wrongAns = 0
+    private var rightAns = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,25 +91,50 @@ class GameFragment : Fragment() {
                 }
                 // The first answer in the original question is always the correct one, so if our
                 // answer matches, we have the correct answer.
+
+
+                //rigtig kode
                 if (answers[answerIndex] == currentQuestion.answers[0]) {
                     questionIndex++
                     // Advance to the next question
                     if (questionIndex < numQuestions) {
                         currentQuestion = questions[questionIndex]
+                        Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
                         setQuestion()
                         binding.invalidateAll()
                     } else {
-                        // We've won!  Navigate to the gameWonFragment.
+                        if (wrongAns >0) {
+                            view.findNavController()
+                                    .navigate(GameFragmentDirections.actionGameFragmentToGameOverFragment())
+                        } else {
+
+                        //        // We've won!  Navigate to the gameWonFragment.
                         view.findNavController()
                                 .navigate(GameFragmentDirections
                                         .actionGameFragmentToGameWonFragment(numQuestions, questionIndex))
-                    }
-                } else {
-                    // Game over! A wrong answer sends us to the gameOverFragment.
-                    view.findNavController()
-                            .navigate(GameFragmentDirections.actionGameFragmentToGameOverFragment())
-                }
+                    }}
+
+
             }
+                else {
+                    if (questionIndex < numQuestions) {
+                        questionIndex++
+                        wrongAns ++
+                        currentQuestion = questions[questionIndex]
+                        Toast.makeText(context, "No, that's not true!", Toast.LENGTH_SHORT).show()
+                        setQuestion()
+                        binding.invalidateAll()
+                    }
+
+                    else {
+                        // Game over! A wrong answer sends us to the gameOverFragment.
+                        view.findNavController()
+                                .navigate(GameFragmentDirections.actionGameFragmentToGameOverFragment())
+                    }
+                }
+
+            }
+
         }
         return binding.root
     }

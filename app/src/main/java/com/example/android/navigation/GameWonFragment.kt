@@ -19,6 +19,7 @@ package com.example.android.navigation
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -36,8 +37,9 @@ class GameWonFragment : Fragment() {
         binding.nextMatchButton.setOnClickListener { view: View ->
             view.findNavController().navigate(GameWonFragmentDirections.actionGameWonFragmentToGameFragment())
         }
-        val args = GameWonFragmentArgs.fromBundle(arguments!!)
-        Toast.makeText(context, "NumCorrect: ${args.numCorrect}, NumQuestions: ${args.numQuestions}", Toast.LENGTH_LONG).show()
+        //val args = GameWonFragmentArgs.fromBundle(arguments!!)
+        //Toast.makeText(context, "NumCorrect: ${args.numCorrect}, NumQuestions: ${args.numQuestions}", Toast.LENGTH_LONG).show()
+
 
         setHasOptionsMenu(true)
         return binding.root
@@ -76,3 +78,6 @@ class GameWonFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 }
+
+
+
